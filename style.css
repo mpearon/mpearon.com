@@ -1,0 +1,90 @@
+*{}
+html{
+	width: 100vw;
+	overflow-x: hidden;
+	background-color: black;
+}
+.pageContainer{
+	margin: 0;
+	width: 100%;
+	font-family: Futura, "Century Gothic", "Avenir Next", sans-serif;
+}
+.flexContainer{
+	display: flex;
+	flex-direction: row;
+	height: 100vh;
+}
+.pane{
+	width: 50%;
+	height: 100%;
+}
+
+#info{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #111;
+}
+.infoContent{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4rem;
+}
+.wordmark{
+	width: 50%;
+}
+.wordmark img{
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.bio{
+	color: #aaa;
+	text-align: center;
+	font-weight: 300;
+	line-height: 1.5;
+}
+.bio p{
+	margin: 0 0 1rem;
+}
+.tagline{
+	font-style: italic;
+}
+.contact{
+	display: flex;
+	justify-content: space-between;
+	width: 50%;
+}
+.contact img{
+	display: block;
+	width: 24px;
+	height: 24px;
+}
+
+#hero{
+	overflow: hidden;
+}
+#hero img{
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top center;
+}
+
+@media screen and (max-width: 768px){
+	#info{
+		width: 100%;
+	}
+	.wordmark{
+		width: 70%;
+	}
+	.contact{
+		width: 70%;
+	}
+	#hero{
+		display: none;
+	}
+}
