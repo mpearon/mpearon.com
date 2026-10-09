@@ -2,7 +2,7 @@
 html{
 	width: 100vw;
 	overflow-x: hidden;
-	background-color: #111;
+	background-color: #000;
 }
 .pageContainer{
 	margin: 0;
@@ -74,6 +74,9 @@ html{
 }
 
 @media screen and (max-width: 768px){
+	html{
+		overflow: hidden;
+	}
 	#info{
 		width: 100%;
 		height: 100%;
