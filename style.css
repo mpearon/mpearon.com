@@ -2,7 +2,7 @@
 html{
 	width: 100vw;
 	overflow-x: hidden;
-	background-color: black;
+	background-color: #111;
 }
 .pageContainer{
 	margin: 0;
@@ -23,7 +23,6 @@ html{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #111;
 }
 .infoContent{
 	width: 100%;
