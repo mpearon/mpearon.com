@@ -132,6 +132,9 @@ html{
 .errorHero img{
 	object-position: 58% center;
 }
+.errorHeroTop img{
+	object-position: center top;
+}
 @media screen and (max-width: 768px){
 	.errorHeadline{
 		font-size: 1.75rem;
