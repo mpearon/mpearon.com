@@ -115,9 +115,19 @@ html{
 .errorDetail{
 	font-size: 0.9rem;
 }
-.errorHome a{
-	color: #aaa;
-	font-weight: 300;
+.bio a{
+	color: #ddd;
+	text-decoration-color: #777;
+	text-underline-offset: 0.2em;
+}
+.bio a:hover{
+	color: #fff;
+	text-decoration-color: currentColor;
+}
+.errorDetail code{
+	font-family: ui-monospace, Menlo, Consolas, monospace;
+	font-size: 0.85rem;
+	color: #ddd;
 }
 .errorHero img{
 	object-position: 58% center;
