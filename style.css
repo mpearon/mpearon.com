@@ -91,3 +91,37 @@ html{
 		display: none;
 	}
 }
+
+/* 403 page */
+.errorMessage{
+	width: 70%;
+	max-width: 32rem;
+}
+.errorHeadline{
+	margin: 0 0 2.5rem;
+	color: #ddd;
+	font-size: 2.25rem;
+	font-weight: 500;
+	line-height: 1.2;
+}
+.errorLabel{
+	font-size: 0.8rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #777;
+}
+.errorDetail{
+	font-size: 0.9rem;
+}
+.errorHome a{
+	color: #aaa;
+	font-weight: 300;
+}
+.errorHero img{
+	object-position: 58% center;
+}
+@media screen and (max-width: 768px){
+	.errorHeadline{
+		font-size: 1.75rem;
+	}
+}
