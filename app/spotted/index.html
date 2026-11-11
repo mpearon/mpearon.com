@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Spotted: support and privacy</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Help with Spotted, the app that measures your run in mutts, and how Spotted treats your data.">
+		<link rel="icon" href="/favicon.ico" sizes="any">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
+		<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+		<style>
+			:root {
+				--bg: #151515;
+				--card: #1d1d1d;
+				--line: #2e2e2e;
+				--text: #aaa;
+				--strong: #eee;
+				--dim: #777;
+				--accent: #e0541a; /* Spotted orange */
+			}
+			html { background-color: var(--bg); scroll-behavior: smooth; }
+			body {
+				margin: 0;
+				padding: 3rem 1.5rem 4rem;
+				color: var(--text);
+				font-family: Futura, "Century Gothic", "Avenir Next", sans-serif;
+				font-weight: 300;
+				line-height: 1.7;
+			}
+			main { max-width: 42rem; margin: 0 auto; }
+			a { color: #ddd; }
+			a:hover { color: #fff; }
+			p { margin: 0 0 1.1rem; }
+			.back { display: inline-block; margin-bottom: 2rem; font-size: 0.9rem; }
+
+			/* Intro */
+			h1 { color: var(--strong); font-weight: 500; font-size: 2.4rem; line-height: 1.15; margin: 0 0 0.5rem; }
+			h1 { display: flex; align-items: center; justify-content: space-between; }
+			h1 .nose { height: 0.9em; width: auto; }
+			.lede { font-size: 1.15rem; margin: 0 0 2.5rem; max-width: 32rem; }
+
+			/* Tabs, mid-page: the intro scrolls away, the tabs stick below it */
+			.tabs {
+				position: sticky; top: 0; z-index: 2;
+				display: flex; gap: 0.5rem;
+				padding: 0.75rem 0;
+				margin-bottom: 2rem;
+				background: linear-gradient(var(--bg) 80%, rgba(21,21,21,0));
+			}
+			.tab {
+				flex: 1;
+				padding: 0.7rem 1rem;
+				border: 1px solid var(--line);
+				border-radius: 999px;
+				background: transparent;
+				color: var(--text);
+				font: inherit; font-weight: 400;
+				cursor: pointer;
+			}
+			.tab:hover { color: var(--strong); border-color: #444; }
+			.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+			.tab:focus-visible { outline: 2px solid #ddd; outline-offset: 2px; }
+
+			h2 { color: var(--strong); font-weight: 500; font-size: 1.35rem; margin: 2.75rem 0 0.75rem; }
+			h2:first-child { margin-top: 0; }
+			h3 { color: var(--strong); font-weight: 500; font-size: 1.05rem; margin: 1.75rem 0 0.25rem; }
+			.kicker { color: var(--dim); font-size: 0.9rem; margin-top: -0.4rem; }
+
+			/* Contact card */
+			.card {
+				background: var(--card);
+				border: 1px solid var(--line);
+				border-radius: 1rem;
+				padding: 1.4rem 1.5rem;
+			}
+			.card p:last-child { margin-bottom: 0; }
+			.card .big { color: var(--strong); font-size: 1.25rem; margin-bottom: 0.4rem; }
+			.card ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+
+			/* FAQ */
+			details { border-bottom: 1px solid var(--line); }
+			details:first-of-type { border-top: 1px solid var(--line); }
+			summary {
+				cursor: pointer; list-style: none;
+				padding: 1rem 2rem 1rem 0; position: relative;
+				color: var(--strong); font-weight: 400;
+			}
+			summary::-webkit-details-marker { display: none; }
+			summary::after { content: "+"; position: absolute; right: 0.25rem; top: 0.85rem; color: var(--accent); font-size: 1.3rem; }
+			details[open] summary::after { content: "\2212"; }
+			details > div { padding: 0 0 0.6rem; }
+
+			/* Privacy at a glance */
+			.glance { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 0 0 0.5rem; }
+			.glance div { background: var(--card); border: 1px solid var(--line); border-radius: 1rem; padding: 1rem 1.1rem; }
+			.glance strong { display: block; color: var(--strong); font-weight: 500; }
+			.glance span { font-size: 0.92rem; line-height: 1.5; display: block; }
+			@media (max-width: 30rem) { .glance { grid-template-columns: 1fr; } }
+
+			.updated { margin-top: 3rem; color: var(--dim); font-size: 0.9rem; }
+			.panel[hidden] { display: none; }
+			code { background: var(--card); padding: 0.1rem 0.4rem; border-radius: 0.3rem; font-size: 0.9em; }
+		</style>
+	</head>
+	<body>
+		<main>
+			<a class="back" href="/">&larr; mpearon.com</a>
+
+			<h1>Spotted<svg class="nose" viewBox="0 0 124 100" role="img" aria-label="" xmlns="http://www.w3.org/2000/svg">
+				<path fill="#e0541a" d="M62 6C96.72 0 124 4 124 32C124 64 91.76 100 62 100C32.24 100 0 64 0 32C0 4 27.28 0 62 6Z"/>
+				<ellipse cx="37.2" cy="17" rx="13.6" ry="4.5" fill="#fff" fill-opacity=".25" transform="rotate(-14 37.2 17)"/>
+				<path fill="#7a2a08" d="M42.46 44C49.82 43.5 54.5 47 54.5 52C54.5 57 51.16 60.25 45.8 60.5C38.44 61 28.4 63.5 22.7 68C25.05 59 31.74 44.5 42.46 44Z"/>
+				<path fill="#7a2a08" transform="translate(124 0) scale(-1 1)" d="M42.46 44C49.82 43.5 54.5 47 54.5 52C54.5 57 51.16 60.25 45.8 60.5C38.44 61 28.4 63.5 22.7 68C25.05 59 31.74 44.5 42.46 44Z"/>
+				<path d="M62 60V95" stroke="#7a2a08" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+			</svg></h1>
+			<p class="lede">Measure your run in mutts, not minutes. Here's how to get help, and exactly what the app does (and doesn't do) with your data.</p>
+
+			<div class="tabs" role="tablist" aria-label="Spotted help">
+				<button class="tab" role="tab" id="tab-support" aria-controls="support" aria-selected="true">Support</button>
+				<button class="tab" role="tab" id="tab-privacy" aria-controls="privacy" aria-selected="false">Privacy</button>
+			</div>
+
+			<!-- SUPPORT -->
+			<section class="panel" id="support" role="tabpanel" aria-labelledby="tab-support">
+				<h2>Quick fixes</h2>
+				<details>
+					<summary>My count isn't showing on the widget or Lock Screen</summary>
+					<div><p>Open Spotted once; the widget and Live Activity refresh when the app comes to the front. Counts made with the Action Button or the widget are saved on your iPhone straight away, so nothing is lost. If a Live Activity is stuck, finish or cancel the run in the app.</p></div>
+				</details>
+				<details>
+					<summary>Set up the Action Button</summary>
+					<div><p>In the iPhone Settings app, open Action Button, choose Shortcut, then pick Spotted's <code>Count</code> action. One press adds one dog, no looking required. Siri works too: say "Count with Spotted".</p></div>
+				</details>
+				<details>
+					<summary>Spotted doesn't suggest a distance</summary>
+					<div><p>The distance suggestion comes from your step count, so it needs Motion &amp; Fitness access. Turn it on in Settings &rarr; Privacy &amp; Security &rarr; Motion &amp; Fitness &rarr; Spotted. You can always type a distance yourself, and a suggestion is never saved unless you confirm it.</p></div>
+				</details>
+				<details>
+					<summary>I forgot to start a run, or need to fix one</summary>
+					<div><p>Tap the nose and a run starts on its own. Hit a wrong count? Undo removes the last one. For a run you didn't track live, open Past runs from the menu and tap +, then enter the date, count and distance.</p></div>
+				</details>
+				<details>
+					<summary>Leaderboards won't load</summary>
+					<div><p>Leaderboards use Game Center, so you need to be signed in to it (Settings &rarr; Game Center) and online. They're off until you turn them on in the app. Scores wait in a small queue and send once your phone is back online.</p></div>
+				</details>
+				<details>
+					<summary>New iPhone, or my runs disappeared</summary>
+					<div><p>Your runs live on your iPhone, not on a server. They come along when you restore from an iCloud or computer backup or use Quick Start to set up a new phone. If you delete Spotted, its runs are deleted with it, and I can't recover them.</p></div>
+				</details>
+				<details>
+					<summary>How do I delete my data?</summary>
+					<div><p>Delete the app, and everything stored on your iPhone goes with it. If you turned on Leaderboards, scores stay in Apple's Game Center; Apple controls those, and you can manage them in Settings &rarr; Game Center.</p></div>
+				</details>
+
+				<p style="margin-top:2rem">Prefer to read the fine print? <a href="#privacy" data-tab="privacy">Jump to privacy</a>.</p>
+			</section>
+
+			<!-- PRIVACY -->
+			<section class="panel" id="privacy" role="tabpanel" aria-labelledby="tab-privacy" hidden>
+				<h2>The short version</h2>
+				<div class="glance">
+					<div><strong>No accounts</strong><span>Nothing to sign up for.</span></div>
+					<div><strong>No tracking</strong><span>No ads, analytics or trackers, ever.</span></div>
+					<div><strong>Stays on your phone</strong><span>Runs, counts and names are stored on your iPhone.</span></div>
+					<div><strong>You choose to share</strong><span>The only online feature, Leaderboards, is off until you turn it on.</span></div>
+				</div>
+
+				<h2>What Spotted stores</h2>
+				<p>Spotted keeps your runs, counts (each with a timestamp), run names and distances. All of it lives on your iPhone. I never receive it, and I have no server to send it to. The widget, Lock Screen counter, Live Activity and Action Button read the same on-device data so they can show and update your count. It doesn't leave your phone for that either.</p>
+
+				<h2>Permissions</h2>
+				<h3>Motion &amp; Fitness</h3>
+				<p>If you allow it, Spotted reads your step count for the length of a run to suggest a distance and to add a step count to the text you share. The step count is used on your iPhone and isn't stored or sent anywhere by Spotted. Say no and everything else works.</p>
+
+				<h2>Leaderboards (optional)</h2>
+				<p>Leaderboards are off by default. If you turn them on, Spotted signs in with Apple's Game Center and sends your scores (for example, most dogs in a run) to it, so friends can compare. That goes through Apple, under <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>. I don't see it or run any server for it. Spotted never sends run names, locations or timestamps.</p>
+
+				<h2>Sharing a run</h2>
+				<p>The Share button makes a small image and a line of text and hands them to the iOS share sheet. Where it goes is up to you, and Spotted doesn't keep a copy.</p>
+
+				<h2>Feedback through TestFlight</h2>
+				<p>If you send feedback from a TestFlight beta, Apple handles it under Apple's own privacy policy.</p>
+
+				<h2>Deleting your data</h2>
+				<p>Delete the app and its runs are deleted with it. Any Leaderboards scores in Game Center are managed by Apple.</p>
+
+				<h2>Children</h2>
+				<p>Spotted doesn't collect personal information from anyone, including children.</p>
+
+				<h2>This page</h2>
+				<p>This page is plain HTML with no cookies, analytics or ad scripts.</p>
+
+				<h2>Changes</h2>
+				<p>If Spotted's handling of data ever changes, I'll update this page and the date below before the change ships.</p>
+
+				<h2>Questions</h2>
+				<p>Questions about any of this? Head to the <a href="#support" data-tab="support">Support tab</a>.</p>
+
+				<p class="updated">Last updated November 11, 2026</p>
+			</section>
+		</main>
+
+		<script>
+			(function () {
+				var names = ["support", "privacy"];
+				function show(name, push) {
+					if (names.indexOf(name) < 0) name = "support";
+					names.forEach(function (n) {
+						var on = n === name;
+						document.getElementById(n).hidden = !on;
+						document.getElementById("tab-" + n).setAttribute("aria-selected", on);
+						document.getElementById("tab-" + n).tabIndex = on ? 0 : -1;
+					});
+					if (push) history.replaceState(null, "", "#" + name);
+					document.title = "Spotted " + name + (name === "support" ? "" : " policy");
+				}
+				document.querySelectorAll("[data-tab], .tab").forEach(function (el) {
+					el.addEventListener("click", function (e) {
+						e.preventDefault();
+						var name = el.dataset.tab || el.id.replace("tab-", "");
+						show(name, true);
+						document.querySelector(".tabs").scrollIntoView({ block: "start" });
+					});
+				});
+				document.querySelector(".tabs").addEventListener("keydown", function (e) {
+					if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+					var next = names[(names.indexOf(location.hash.slice(1) || "support") + 1) % 2];
+					show(next, true);
+					document.getElementById("tab-" + next).focus();
+				});
+				window.addEventListener("hashchange", function () { show(location.hash.slice(1), false); });
+				show(location.hash.slice(1), false);
+			})();
+		</script>
+		<noscript><style>.panel[hidden] { display: block; } .tabs { display: none; }</style></noscript>
+	</body>
+</html>
