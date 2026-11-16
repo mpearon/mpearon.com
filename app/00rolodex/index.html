@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>00 Rolodex</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="00 Rolodex, an unofficial fan app: the Bond dossier with films, books, games and a scrolling timeline of the franchise.">
+		<link rel="icon" href="/favicon.ico" sizes="any">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
+		<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+		<style>
+			:root {
+				color-scheme: dark;
+				--bg: #151515;        /* black ground, same as the rest of mpearon.com */
+				--surface: #1d1d1d;   /* cards sit a touch lighter */
+				--line: #2e2e2e;
+				--ink: #eee;
+				--dim: #9a9a9a;
+				--accent: #c9a227;    /* dossier gold */
+				--link: #e3c35a;      /* lighter gold for small text on black */
+				--serif: "Didot", "Bodoni 72", "Bodoni MT", "Playfair Display", "Hoefler Text", Georgia, serif;
+				--mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+			}
+			html { background-color: var(--bg); scroll-behavior: smooth; }
+			body {
+				margin: 0;
+				padding: 3rem 1.5rem 4rem;
+				color: var(--ink);
+				font-family: "Avenir Next", Futura, "Century Gothic", system-ui, sans-serif;
+				font-weight: 500;
+				line-height: 1.7;
+				min-height: 100vh;
+				box-sizing: border-box;
+			}
+			main { max-width: 42rem; margin: 0 auto; }
+			a { color: var(--link); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+			a:hover { color: #fff; }
+			a:focus-visible, summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+			p { margin: 0 0 1.1rem; }
+			.back { display: inline-block; margin-bottom: 2rem; font-size: 0.9rem; font-weight: 600; }
+
+			/* Stamp-style labels */
+			.stamp { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); margin: 0 0 0.75rem; }
+			.stamp.gold { color: var(--accent); }
+
+			h1 {
+				margin: 0 0 0.6rem;
+				color: var(--accent); /* fallback */
+				font-family: var(--serif); font-weight: 900;
+				font-size: clamp(3rem, 12vw, 4.6rem); line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase;
+			}
+			@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+				h1 {
+					background: linear-gradient(180deg, #f4dc86 0%, #c9a227 55%, #8a6d12 100%);
+					-webkit-background-clip: text; background-clip: text;
+					-webkit-text-fill-color: transparent; color: transparent;
+				}
+			}
+			.lede { font-family: var(--serif); font-style: italic; font-size: 1.25rem; font-weight: 700; margin: 0 0 2.5rem; max-width: 32rem; }
+
+			/* Tabs, mid-page: the intro scrolls away, the tabs stick below it */
+			.tabs {
+				position: sticky; top: 0; z-index: 2;
+				display: flex; gap: 0.5rem;
+				padding: 0.75rem 0;
+				margin-bottom: 2rem;
+				background: linear-gradient(var(--bg) 78%, rgba(21, 21, 21, 0));
+			}
+			.tab {
+				flex: 1;
+				padding: 0.7rem 0.5rem;
+				border: 2px solid #444;
+				border-radius: 999px;
+				background: var(--surface);
+				color: var(--ink);
+				font-family: var(--mono); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+				cursor: pointer;
+				transition: transform 0.12s ease;
+			}
+			.tab:hover { transform: translateY(-1px); }
+			.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #151515; }
+			.tab:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+			h2 { color: var(--ink); font-family: var(--serif); font-weight: 900; font-size: 1.7rem; letter-spacing: 0.01em; margin: 2.75rem 0 0.75rem; }
+			h2:first-child { margin-top: 0; }
+			h3 { color: var(--ink); font-family: var(--serif); font-weight: 800; font-size: 1.2rem; margin: 1.75rem 0 0.25rem; }
+
+			/* FAQ */
+			details { border-bottom: 2px solid var(--line); }
+			details:first-of-type { border-top: 2px solid var(--line); }
+			summary {
+				cursor: pointer; list-style: none;
+				padding: 1rem 2.25rem 1rem 0; position: relative;
+				font-weight: 700;
+			}
+			summary::-webkit-details-marker { display: none; }
+			summary::after { content: "+"; position: absolute; right: 0.15rem; top: 0.55rem; color: var(--accent); font-family: var(--serif); font-weight: 900; font-size: 1.8rem; line-height: 1.4; }
+			details[open] summary::after { content: "\2212"; }
+			details > div { padding: 0 0 0.6rem; }
+
+			/* At a glance */
+			.glance { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 0 0 0.5rem; }
+			.glance div { background: var(--surface); border: 2px solid var(--line); border-radius: 1.1rem; padding: 1rem 1.1rem; }
+			.glance strong { display: block; color: var(--accent); font-family: var(--serif); font-weight: 900; font-size: 1.2rem; }
+			.glance span { font-size: 0.95rem; line-height: 1.5; display: block; }
+			@media (max-width: 30rem) { .glance { grid-template-columns: 1fr; } }
+
+			.card { background: var(--surface); border: 2px solid var(--line); border-radius: 1.1rem; padding: 1.4rem 1.5rem; }
+			.card p:last-child { margin-bottom: 0; }
+			.updated { margin-top: 3rem; color: var(--dim); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; }
+			.small { color: var(--dim); font-size: 0.9rem; }
+			.panel[hidden] { display: none; }
+			code { background: rgba(201, 162, 39, 0.14); padding: 0.1rem 0.4rem; border-radius: 0.3rem; font-size: 0.9em; }
+			ul.plain { margin: 0 0 1.1rem; padding-left: 1.25rem; }
+			@media (max-width: 30rem) { .tab { font-size: 0.7rem; letter-spacing: 0.08em; } }
+		</style>
+	</head>
+	<body>
+		<main>
+			<a class="back" href="/">&larr; mpearon.com</a>
+
+			<p class="stamp gold">Classified &mdash; eyes only</p>
+			<h1>00 Rolodex</h1>
+			<p class="stamp">The Bond dossier &middot; 1952 &mdash; present</p>
+			<p class="lede">The Bond dossier &mdash; films, books, games and a scrolling timeline of the franchise.</p>
+
+			<div class="tabs" role="tablist" aria-label="00 Rolodex">
+				<button class="tab" role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Overview</button>
+				<button class="tab" role="tab" id="tab-support" aria-controls="support" aria-selected="false">Support</button>
+				<button class="tab" role="tab" id="tab-privacy" aria-controls="privacy" aria-selected="false">Privacy</button>
+			</div>
+
+			<!-- OVERVIEW -->
+			<section class="panel" id="overview" role="tabpanel" aria-labelledby="tab-overview">
+				<h2>What it does</h2>
+				<div class="glance">
+					<div><strong>Timeline</strong><span>A scrolling timeline of film releases and franchise news, with filters for Films, Books, Games and Other.</span></div>
+					<div><strong>Every film</strong><span>Every Eon film, plus the non-Eon films, clearly labelled as such.</span></div>
+					<div><strong>Fleming's books</strong><span>Ian Fleming's novels and story collections.</span></div>
+					<div><strong>Film pages</strong><span>Cast, cars, gadgets and locations for each film.</span></div>
+					<div><strong>Ratings</strong><span>Your own ratings, and a watched tracker.</span></div>
+					<div><strong>Watch plan</strong><span>A calculator that spreads the films over a timeframe you choose and exports to your calendar.</span></div>
+				</div>
+				<p class="stamp" style="margin-top:1rem">Status: in development</p>
+
+				<h2>Unofficial fan project</h2>
+				<div class="card">
+					<p>00 Rolodex is an unofficial fan project. It is not affiliated with or endorsed by Eon Productions, Danjaq, Amazon MGM Studios or the estate of Ian Fleming.</p>
+					<p>Film and book artwork and all related trademarks belong to their respective owners.</p>
+				</div>
+
+				<h2>Credits</h2>
+				<ul class="plain">
+					<li><a href="https://www.themoviedb.org/">TMDB</a> for film data and artwork</li>
+					<li><a href="https://openlibrary.org/">Open Library</a> for book data and covers</li>
+					<li><a href="https://commons.wikimedia.org/">Wikimedia Commons</a> for images</li>
+				</ul>
+				<p class="small">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+				<p class="small">Questions? Head to the <a href="#support" data-tab="support">Support tab</a>, or read the <a href="#privacy" data-tab="privacy">privacy details</a>.</p>
+			</section>
+
+			<!-- SUPPORT -->
+			<section class="panel" id="support" role="tabpanel" aria-labelledby="tab-support" hidden>
+				<h2>Quick fixes</h2>
+				<details>
+					<summary>Posters, covers or photos aren't showing</summary>
+					<div><p>Artwork is fetched from other services (TMDB, Open Library and Wikimedia Commons), so you need to be online. If one of them is slow or has no image for a title, that picture can be missing.</p></div>
+				</details>
+				<details>
+					<summary>The timeline's news isn't updating</summary>
+					<div><p>The app downloads a small news list from mpearon.com. Check your connection and reopen the app. You can see the list yourself at <a href="/app/00rolodex/news.json"><code>news.json</code></a>.</p></div>
+				</details>
+				<details>
+					<summary>Movie-night reminders</summary>
+					<div><p>Reminders are optional local notifications made on your device. If they don't appear, check that notifications are allowed for the app in iPhone Settings.</p></div>
+				</details>
+				<details>
+					<summary>Exporting the watch plan to my calendar</summary>
+					<div><p>The export is a calendar file that you share yourself, for example to your calendar app. The app doesn't add events on its own.</p></div>
+				</details>
+				<details>
+					<summary>Where are my ratings and watched films kept?</summary>
+					<div><p>Ratings, watched films, your watch plan and settings are stored on your device only. There are no accounts and nothing is synced.</p></div>
+				</details>
+				<details>
+					<summary>Is this an official Bond app?</summary>
+					<div><p>No. It's an unofficial fan project and isn't affiliated with or endorsed by Eon Productions, Danjaq, Amazon MGM Studios or the estate of Ian Fleming.</p></div>
+				</details>
+
+				<p style="margin-top:2rem">Prefer to read the fine print? <a href="#privacy" data-tab="privacy">Jump to privacy</a>.</p>
+			</section>
+
+			<!-- PRIVACY -->
+			<section class="panel" id="privacy" role="tabpanel" aria-labelledby="tab-privacy" hidden>
+				<h2>The short version</h2>
+				<div class="glance">
+					<div><strong>No accounts</strong><span>Nothing to sign up for.</span></div>
+					<div><strong>No tracking</strong><span>No ads, analytics or tracking SDKs.</span></div>
+					<div><strong>Stays on your device</strong><span>Ratings, watched films, your watch plan and settings are stored on the device only.</span></div>
+					<div><strong>Lookups go online</strong><span>Artwork and info come from third-party services, listed below.</span></div>
+				</div>
+
+				<h2>What the app stores</h2>
+				<p>Your ratings, watched films, watch plan and settings are stored on your device only. The app has no accounts and no server of its own that holds your data.</p>
+
+				<h2>Requests to other services</h2>
+				<p>To show artwork and information, the app sends search requests (film and book titles and years, and search terms) to these third-party services:</p>
+				<ul class="plain">
+					<li><strong>The Movie Database (TMDB)</strong> for film posters, stills, cast, and runtime and budget figures. <a href="https://www.themoviedb.org/privacy-policy">Privacy policy</a></li>
+					<li><strong>Open Library</strong> for book covers. <a href="https://archive.org/about/terms">Internet Archive terms and privacy policy</a></li>
+					<li><strong>Wikimedia Commons</strong> for photos of cars, gadgets and places. <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">Privacy policy</a></li>
+					<li><strong>Apple's iTunes Search API</strong> for 30-second theme-song previews. <a href="https://www.apple.com/legal/privacy/">Privacy policy</a></li>
+				</ul>
+				<p>The app also downloads a small news list from mpearon.com (<code>https://mpearon.com/app/00rolodex/news.json</code>).</p>
+				<p>As with any web request, these services receive the request and your device's IP address. They handle that under their own privacy policies, linked above.</p>
+
+				<h2>Notifications</h2>
+				<p>Movie-night reminders are optional local notifications. They are generated on your device, and no data leaves the device for them.</p>
+
+				<h2>Calendar export</h2>
+				<p>The calendar export is a file that you share yourself. Where it goes is up to you.</p>
+
+				<h2>Selling and sharing</h2>
+				<p>The app itself doesn't sell or share any personal data.</p>
+
+				<h2>Children</h2>
+				<p>00 Rolodex isn't directed at children.</p>
+
+				<h2>This page</h2>
+				<p>This page is plain HTML with no cookies, analytics or ad scripts.</p>
+
+				<p class="updated">Last updated November 16, 2026</p>
+			</section>
+		</main>
+
+		<script>
+			(function () {
+				var names = ["overview", "support", "privacy"];
+				var titles = { overview: "00 Rolodex", support: "00 Rolodex support", privacy: "00 Rolodex privacy policy" };
+				function show(name, push) {
+					if (names.indexOf(name) < 0) name = "overview";
+					names.forEach(function (n) {
+						var on = n === name;
+						document.getElementById(n).hidden = !on;
+						document.getElementById("tab-" + n).setAttribute("aria-selected", on);
+						document.getElementById("tab-" + n).tabIndex = on ? 0 : -1;
+					});
+					if (push) history.replaceState(null, "", "#" + name);
+					document.title = titles[name];
+					return name;
+				}
+				document.querySelectorAll("[data-tab], .tab").forEach(function (el) {
+					el.addEventListener("click", function (e) {
+						e.preventDefault();
+						var name = el.dataset.tab || el.id.replace("tab-", "");
+						show(name, true);
+						document.querySelector(".tabs").scrollIntoView({ block: "start" });
+					});
+				});
+				document.querySelector(".tabs").addEventListener("keydown", function (e) {
+					var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+					if (!d) return;
+					var cur = names.indexOf(location.hash.slice(1));
+					if (cur < 0) cur = 0;
+					var next = names[(cur + d + names.length) % names.length];
+					show(next, true);
+					document.getElementById("tab-" + next).focus();
+				});
+				window.addEventListener("hashchange", function () { show(location.hash.slice(1), false); });
+				show(location.hash.slice(1), false);
+			})();
+		</script>
+		<noscript><style>.panel[hidden] { display: block; } .tabs { display: none; }</style></noscript>
+	</body>
+</html>
