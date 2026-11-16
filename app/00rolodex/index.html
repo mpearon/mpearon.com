@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>00 Rolodex</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="00 Rolodex, an unofficial fan app: the Bond dossier with films, books, games and a scrolling timeline of the franchise.">
+		<link rel="icon" href="/favicon.ico" sizes="any">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
+		<link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+		<style>
+			:root {
+				color-scheme: dark;
+				--bg: #151515;        /* black ground, same as the rest of mpearon.com */
+				--surface: #1d1d1d;
+				--line: #2e2e2e;
+				--ink: #eee;
+				--dim: #9a9a9a;
+				--accent: #c9a227;    /* dossier gold */
+				--link: #e3c35a;
+				--round: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Avenir Next", Futura, sans-serif;
+			}
+			html { background-color: var(--bg); }
+			body {
+				margin: 0;
+				padding: 3rem 1.5rem 4rem;
+				color: var(--ink);
+				font-family: "Avenir Next", Futura, "Century Gothic", system-ui, sans-serif;
+				font-weight: 500;
+				line-height: 1.7;
+				min-height: 100vh;
+				box-sizing: border-box;
+			}
+			main { max-width: 42rem; margin: 0 auto; }
+			a { color: var(--link); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+			a:hover { color: #fff; }
+			a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+			p { margin: 0 0 1.1rem; }
+			.back { display: inline-block; margin-bottom: 2rem; font-size: 0.9rem; font-weight: 600; }
+			h1 {
+				margin: 0 0 0.6rem;
+				color: var(--accent);
+				font-family: var(--round); font-weight: 900;
+				font-size: clamp(2.8rem, 11vw, 4rem); line-height: 1.05; letter-spacing: -0.03em;
+			}
+			.lede { font-size: 1.15rem; font-weight: 600; margin: 0 0 1.5rem; max-width: 32rem; }
+			h2 { font-family: var(--round); font-weight: 900; font-size: 1.5rem; letter-spacing: -0.01em; margin: 2.75rem 0 0.75rem; }
+			.status { display: inline-block; padding: 0.35rem 1rem; border: 2px solid var(--accent); border-radius: 999px; color: var(--accent); font-family: var(--round); font-weight: 800; font-size: 0.95rem; }
+			.features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
+			.features li { background: var(--surface); border: 2px solid var(--line); border-radius: 1.1rem; padding: 1rem 1.1rem; font-size: 0.95rem; line-height: 1.5; }
+			.features strong { display: block; color: var(--accent); font-family: var(--round); font-weight: 900; font-size: 1.1rem; }
+			@media (max-width: 30rem) { .features { grid-template-columns: 1fr; } }
+			.card { background: var(--surface); border: 2px solid var(--line); border-radius: 1.1rem; padding: 1.4rem 1.5rem; }
+			.card p:last-child { margin-bottom: 0; }
+			.small { color: var(--dim); font-size: 0.9rem; }
+			ul.credits { margin: 0 0 1.1rem; padding-left: 1.25rem; }
+		</style>
+	</head>
+	<body>
+		<main>
+			<a class="back" href="/">&larr; mpearon.com</a>
+
+			<h1>00 Rolodex</h1>
+			<p class="lede">The Bond dossier &mdash; films, books, games and a scrolling timeline of the franchise.</p>
+			<p><span class="status">In development</span></p>
+
+			<h2>What it does</h2>
+			<ul class="features">
+				<li><strong>Timeline</strong>A scrolling timeline of film releases and franchise news, with filters for Films, Books, Games and Other.</li>
+				<li><strong>Every film</strong>Every Eon film, plus the non-Eon films, clearly labelled as such.</li>
+				<li><strong>Fleming's books</strong>Ian Fleming's novels and story collections.</li>
+				<li><strong>Film pages</strong>Cast, cars, gadgets and locations for each film.</li>
+				<li><strong>Ratings</strong>Your own ratings, and a watched tracker.</li>
+				<li><strong>Watch plan</strong>A calculator that spreads the films over a timeframe you choose and exports to your calendar.</li>
+			</ul>
+
+			<h2>Unofficial fan project</h2>
+			<div class="card">
+				<p>00 Rolodex is an unofficial fan project. It is not affiliated with or endorsed by Eon Productions, Danjaq, Amazon MGM Studios or the estate of Ian Fleming.</p>
+				<p>Film and book artwork and all related trademarks belong to their respective owners.</p>
+			</div>
+
+			<h2>Credits</h2>
+			<ul class="credits">
+				<li><a href="https://www.themoviedb.org/">TMDB</a> for film data and artwork</li>
+				<li><a href="https://openlibrary.org/">Open Library</a> for book data</li>
+				<li><a href="https://commons.wikimedia.org/">Wikimedia Commons</a> for images</li>
+			</ul>
+			<p class="small">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+
+			<p class="small" style="margin-top:3rem">The timeline's news items are published as <a href="news.json"><code>news.json</code></a>.</p>
+		</main>
+	</body>
+</html>
